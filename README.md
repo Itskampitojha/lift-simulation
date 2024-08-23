@@ -50,15 +50,12 @@ This Lift Simulation project simulates the functioning of an elevator system usi
 
 ## Demo
 
-A live demo of the Lift Simulation project can be accessed at [your-live-demo-url](https://lift-simulation-roan.vercel.app/).
+A live demo of the Lift Simulation project can be accessed at [Here](https://lift-simulation-roan.vercel.app/).
 
 ## Contributing
 
 Contributions are welcome! If you have suggestions for improvements or new features, feel free to create a pull request or open an issue.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
