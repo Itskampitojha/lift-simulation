@@ -1,0 +1,74 @@
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+}
+
+#elevatorContainer {
+    position: relative;
+    margin-top: 20px;
+}
+
+.elevator {
+    width: 80px;
+    height: 100px;
+    background-color: black;
+    position: absolute;
+    bottom: 0;
+    transition: transform 2s;
+}
+
+.door {
+    width: 50%;
+    height: 100%;
+    background-color: pink;
+    position: absolute;
+    top: 0;
+    transition: transform 2.5s;
+}
+
+.door.left {
+    left: 0;
+    transform-origin: left;
+}
+
+.door.right {
+    right: 0;
+    transform-origin: right;
+}
+
+.door.opened {
+    background-color: pink;
+}
+
+.floor {
+    width: 100%;
+    height: 100px;
+    border-top: 1px solid #000;
+    position: relative;
+}
+
+.button {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
