@@ -56,7 +56,6 @@ A live demo of the Lift Simulation project can be accessed at [Here](https://lif
 
 Contributions are welcome! If you have suggestions for improvements or new features, feel free to create a pull request or open an issue.
 
-
 ## Acknowledgments
 
 - Thanks to the concept and design ideas.
