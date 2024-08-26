@@ -15,7 +15,7 @@ body {
 #elevatorContainer {
     position: relative;
     margin-top: 20px;
-    align-items: flex-end; /* Align lifts at the bottom */
+    align-items: flex-end; 
 }
 
 .elevator {
@@ -33,9 +33,9 @@ body {
 
 
 .lift-container {
-    display: flex; /* Use flex to align lifts horizontally */
+    display: flex; 
     position: absolute;
-    margin-left: 100px; /* This can be adjusted as needed */
+    margin-left: 100px; 
 }
 
 
