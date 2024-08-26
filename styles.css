@@ -70,6 +70,10 @@ body {
     position: relative;
 }
 
+.floor-info{
+    position: absolute;
+}
+
 .button {
     position: absolute;
     margin-left: 13px;
@@ -104,3 +108,5 @@ body {
 .button:hover {
     background-color: #0056b3;
 }
+
+
