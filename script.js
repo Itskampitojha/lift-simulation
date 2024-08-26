@@ -33,7 +33,9 @@ function setupSimulation(numLifts, numFloors) {
         lift.id = `lift-${i}`;
         
         // Set the position of each lift horizontally based on its index
-        lift.style.left = `${i * 100}px`; // Adjust spacing as necessary
+        const leftPosition = (i * 100) + 100; // Adding a left margin of 20px
+        lift.style.left = `${leftPosition}px`; 
+    
 
         // Doors creation
         const leftDoor = document.createElement('div');
