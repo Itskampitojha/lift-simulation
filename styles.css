@@ -15,6 +15,7 @@ body {
 #elevatorContainer {
     position: relative;
     margin-top: 20px;
+    align-items: flex-end; /* Align lifts at the bottom */
 }
 
 .elevator {
@@ -23,8 +24,21 @@ body {
     background-color: black;
     position: absolute;
     bottom: 0;
+    left: 0;
     transition: transform 2s;
+    
+    
 }
+
+
+
+.lift-container {
+    display: flex; /* Use flex to align lifts horizontally */
+    position: absolute;
+    margin-left: 100px; /* This can be adjusted as needed */
+}
+
+
 
 .door {
     width: 50%;
@@ -68,6 +82,8 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
+
+
 
 .button:hover {
     background-color: #0056b3;
