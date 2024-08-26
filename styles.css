@@ -71,7 +71,21 @@ body {
 }
 
 .button {
-    position: absolute;
+    position: relative;
+    margin-left: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button1 {
+    position: relative;
     left: 50%;
     transform: translateX(-50%);
     bottom: 10px;
