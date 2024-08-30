@@ -13,18 +13,35 @@ function setupSimulation(numLifts, numFloors) {
     floors = [];
     lifts = [];
 
-    // Floors creation
-    for (let i = numFloors - 1; i >= 0; i--) { // Create from top floor to bottom
-        const floor = document.createElement('div');
-        floor.classList.add('floor');
+   // Floors creation
+for (let i = numFloors - 1; i >= 0; i--) { // Create from top floor to bottom
+    const floor = document.createElement('div');
+    floor.classList.add('floor');
+
+    // Check for ground floor and top floor
+    if (i === 0) { // Ground floor
+        floor.classList.add('ground-floor'); // Additional class for ground floor
+        floor.innerHTML = `
+            <div class="floor-info">Floor ${i + 1}</div>
+            <button class="button1" onclick="callLift(${i}, 'up')">Up</button>
+        `;
+    } else if (i === numFloors - 1) { // Top floor
+        floor.classList.add('top-floor'); // Additional class for top floor
+        floor.innerHTML = `
+            <div class="floor-info">Floor ${i + 1}</div>
+            <button class="button" onclick="callLift(${i}, 'down')">Down</button>
+        `;
+    } else { // Middle floors
         floor.innerHTML = `
             <div class="floor-info">Floor ${i + 1}</div>
             <button class="button1" onclick="callLift(${i}, 'up')">Up</button>
             <button class="button" onclick="callLift(${i}, 'down')">Down</button>
         `;
-        elevatorContainer.appendChild(floor);
-        floors.push(floor);
     }
+
+    elevatorContainer.appendChild(floor);
+    floors.push(floor);
+}
 
     // Lifts creation
     for (let i = 0; i < numLifts; i++) {

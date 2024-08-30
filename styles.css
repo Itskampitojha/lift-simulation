@@ -116,3 +116,15 @@ body {
 }
 
 
+.ground-floor .button1 {
+    margin-left: 60px;
+}
+
+.top-floor .button {
+    position: absolute; /* Absolute positioning within the parent */
+    left: 0%;          /* Move the button 50% from the left edge of the parent */
+    margin-left: 65px;
+}
+
+
+
