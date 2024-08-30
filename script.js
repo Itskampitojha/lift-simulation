@@ -33,9 +33,12 @@ function setupSimulation(numLifts, numFloors) {
         lift.id = `lift-${i}`;
         
         // Set the position of each lift horizontally based on its index
-        const leftPosition = (i * 100) + 100; // Adding a left margin of 20px
+        const leftPosition = (i * 100) + 120; // Adding a left margin of 20px
         lift.style.left = `${leftPosition}px`; 
-    
+
+        // Set the initial vertical position to the ground floor
+        lift.style.position = 'absolute'; // Ensure lifts can be positioned absolutely
+        lift.style.top = '0px'; // Ensure the lift starts at the ground level
 
         // Doors creation
         const leftDoor = document.createElement('div');
@@ -46,10 +49,16 @@ function setupSimulation(numLifts, numFloors) {
 
         lift.appendChild(leftDoor);
         lift.appendChild(rightDoor);
-        elevatorContainer.appendChild(lift);
+        
+        // Append the lift to the ground floor (first element in floors array)
+        floors[floors.length - 1].appendChild(lift); // Append lift to the ground floor
+
         lifts.push({ lift, currentFloor: 0, isMoving: false, doorsOpen: false }); // Lift object with current floor
     }
 }
+
+// The rest of your functions remain unchanged (callLift, moveLift, openDoors, closeDoors)
+
 
 function callLift(targetFloor) {
     // Find the nearest available lift

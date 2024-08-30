@@ -16,6 +16,9 @@ body {
     position: relative;
     margin-top: 20px;
     align-items: flex-end; 
+    height: 500px;
+    width: 900px;
+    overflow-y: scroll;
 }
 
 .elevator {
@@ -72,11 +75,13 @@ body {
 
 .floor-info{
     position: absolute;
+    margin-top: 9px;
+    margin-left: 25px;
 }
 
 .button {
     position: absolute;
-    margin-left: 13px;
+    margin-left: 40px;
     left: 5%;
     transform: translateX(-50%);
     bottom: 10px;
@@ -91,6 +96,7 @@ body {
 
 .button1 {
     position: absolute;
+    margin-left: 35px;
     left: 0%;
     transform: translateX(-50%);
     bottom: 10px;
