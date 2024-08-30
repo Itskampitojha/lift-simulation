@@ -19,14 +19,14 @@ for (let i = numFloors - 1; i >= 0; i--) { // Create from top floor to bottom
     floor.classList.add('floor');
 
     // Check for ground floor and top floor
-    if (i === 0) { // Ground floor
-        floor.classList.add('ground-floor'); // Additional class for ground floor
+    if (i === 0) { 
+        floor.classList.add('ground-floor'); 
         floor.innerHTML = `
             <div class="floor-info">Floor ${i + 1}</div>
             <button class="button1" onclick="callLift(${i}, 'up')">Up</button>
         `;
-    } else if (i === numFloors - 1) { // Top floor
-        floor.classList.add('top-floor'); // Additional class for top floor
+    } else if (i === numFloors - 1) { 
+        floor.classList.add('top-floor'); 
         floor.innerHTML = `
             <div class="floor-info">Floor ${i + 1}</div>
             <button class="button" onclick="callLift(${i}, 'down')">Down</button>
@@ -50,12 +50,12 @@ for (let i = numFloors - 1; i >= 0; i--) { // Create from top floor to bottom
         lift.id = `lift-${i}`;
         
         // Set the position of each lift horizontally based on its index
-        const leftPosition = (i * 100) + 120; // Adding a left margin of 20px
+        const leftPosition = (i * 100) + 120; 
         lift.style.left = `${leftPosition}px`; 
 
         // Set the initial vertical position to the ground floor
-        lift.style.position = 'absolute'; // Ensure lifts can be positioned absolutely
-        lift.style.top = '0px'; // Ensure the lift starts at the ground level
+        lift.style.position = 'absolute'; 
+        lift.style.top = '0px';
 
         // Doors creation
         const leftDoor = document.createElement('div');
@@ -67,8 +67,8 @@ for (let i = numFloors - 1; i >= 0; i--) { // Create from top floor to bottom
         lift.appendChild(leftDoor);
         lift.appendChild(rightDoor);
         
-        // Append the lift to the ground floor (first element in floors array)
-        floors[floors.length - 1].appendChild(lift); // Append lift to the ground floor
+       
+        floors[floors.length - 1].appendChild(lift); 
 
         lifts.push({ lift, currentFloor: 0, isMoving: false, doorsOpen: false }); // Lift object with current floor
     }
@@ -83,7 +83,7 @@ function callLift(targetFloor) {
     let minDistance = Infinity;
 
     lifts.forEach(liftObj => {
-        if (!liftObj.isMoving && !liftObj.doorsOpen) { // Only consider lifts that are not moving and have doors closed
+        if (!liftObj.isMoving && !liftObj.doorsOpen) { 
             const distance = Math.abs(liftObj.currentFloor - targetFloor);
             if (distance < minDistance) {
                 minDistance = distance;
@@ -105,7 +105,7 @@ function moveLift(liftObj, targetFloor) {
 
     // Ensure doors are closed before moving
     closeDoors(liftObj, () => {
-        // Calculate time based on the number of floors to move (e.g., 1 second per floor)
+        
         const timeToMove = Math.abs(floorsToMove) * 1000;
 
         // Animate lift movement only after doors are closed
@@ -114,13 +114,13 @@ function moveLift(liftObj, targetFloor) {
 
         // Wait for the lift to reach the target floor
         setTimeout(() => {
-            // Update the current floor after the lift has reached the target floor
+           
             liftObj.currentFloor = targetFloor;
             liftObj.isMoving = false;
 
-            // Open doors only after lift has stopped moving and is at the correct floor
+            
             openDoors(liftObj);
-        }, timeToMove); // Delay based on time to move
+        }, timeToMove); 
     });
 }
 
@@ -134,11 +134,11 @@ function openDoors(liftObj) {
     leftDoor.classList.add('opened');
     rightDoor.classList.add('opened');
 
-    leftDoor.style.transform = 'translateX(-100%)'; // Move left door to the left
-    rightDoor.style.transform = 'translateX(100%)'; // Move right door to the right
+    leftDoor.style.transform = 'translateX(-100%)'; 
+    rightDoor.style.transform = 'translateX(100%)'; 
 
     // Close doors after a delay (e.g., 2.5 seconds)
-    setTimeout(() => closeDoors(liftObj), 2500); // Adjust delay as needed
+    setTimeout(() => closeDoors(liftObj), 2500); 
 }
 
 function closeDoors(liftObj, callback) {
@@ -146,14 +146,14 @@ function closeDoors(liftObj, callback) {
     const leftDoor = lift.querySelector('.door.left');
     const rightDoor = lift.querySelector('.door.right');
 
-    leftDoor.style.transform = 'translateX(0)'; // Move left door back to its position
-    rightDoor.style.transform = 'translateX(0)'; // Move right door back to its position
+    leftDoor.style.transform = 'translateX(0)'; 
+    rightDoor.style.transform = 'translateX(0)'; 
 
     setTimeout(() => {
-        leftDoor.classList.remove('opened'); // Reset door state
-        rightDoor.classList.remove('opened'); // Reset door state
-        liftObj.doorsOpen = false; // Mark doors as closed
+        leftDoor.classList.remove('opened'); 
+        rightDoor.classList.remove('opened'); 
+        liftObj.doorsOpen = false; 
 
-        if (callback) callback(); // Continue moving the lift after doors are closed
-    }, 1000); // Close doors duration (1 second)
+        if (callback) callback(); 
+    }, 1000); 
 }
