@@ -1,5 +1,5 @@
 * {
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
 body {
@@ -7,138 +7,166 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; 
-    background-color: #f4f4f4; 
+    height: 100vh;
+    background-color: #f4f4f4;
+    margin: 0;
 }
 
 .container {
-    text-align: center; 
+    text-align: center;
 }
 
 #elevatorContainer {
     position: relative;
-    margin-top: 20px; 
-    height: 500px;  
-    width: 100%; 
-    max-width: 900px; 
-    overflow-y: scroll; 
+    margin-top: 20px;
+    height: 500px;
+    width: 100%;
+    max-width: 900px;
+    overflow-y: scroll;
 }
 
 .elevator {
-    width: 80px; 
-    height: 100px; 
-    background-color: black; 
+    width: 80px;
+    height: 100px;
+    background-color: black;
     position: absolute;
-    bottom: 0; 
-    left: 0; 
-    transition: transform 2s; 
+    bottom: 0;
+    left: 0;
+    transition: transform 2s;
 }
 
 .lift-container {
-    display: flex; 
-    position: absolute;
-    margin-left: 100px; 
+    display: flex;
+    position: relative;
+    margin-left: 100px;
+    width: 100%;
+    justify-content: flex-start;
 }
 
 .door {
-    width: 50%; 
-    height: 100%; 
-    background-color: pink; 
+    width: 50%;
+    height: 100%;
+    background-color: pink;
     position: absolute;
-    top: 0; 
-    transition: transform 2.5s; 
+    top: 0;
+    transition: transform 2.5s;
 }
 
 .door.left {
     left: 0;
-    transform-origin: left; 
+    transform-origin: left;
 }
 
 .door.right {
-    right: 0; 
-    transform-origin: right; 
+    right: 0;
+    transform-origin: right;
 }
 
 .door.opened {
-    background-color: pink; 
+    background-color: pink;
 }
 
 .floor {
-    width: 100%; 
-    height: 100px; 
-    border-top: 1px solid #000; 
-    position: relative; 
+    width: 100%;
+    height: 100px;
+    border-top: 1px solid #000;
+    position: relative;
 }
 
 .floor-info {
-    position: absolute; 
-    margin-top: 9px; 
-    margin-left: 25px; 
+    position: absolute;
+    margin-top: 9px;
+    margin-left: 25px;
 }
-
-.button {
-    position: absolute; 
-    left: 0%; 
-    transform: translateX(-50%); 
-    margin-left: 80px;
-    bottom: 10px; 
-    padding: 10px; 
-    background-color: #007BFF; 
-    color: white; 
-    border: none; 
-    border-radius: 5px; 
-    cursor: pointer;
-}
-
 
 .button1 {
-    position: absolute; 
-    left: 0%; 
-    margin-left: 30px;
-    transform: translateX(-50%); 
-    bottom: 10px; 
-    padding: 10px; 
-    background-color: #007BFF; 
+    position: absolute;
+    transform: translateX(-50%);
+    padding: 10px;
+    background-color: #007BFF;
+    margin-top: 5%;
     color: white;
     border: none;
-    border-radius: 5px; 
-    cursor: pointer; 
+    border-radius: 5px;
+    cursor: pointer;
+    left: 4%; 
 }
 
-.button:hover {
-    background-color: #0056b3; 
+
+.button{
+    position: absolute;
+    transform: translateX(-50%);
+    padding: 10px;
+    background-color: #007BFF;
+    margin-top: 5%;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    left: 12%; 
 }
 
-.button1:hover {
-    background-color: #0056b3; 
+.button:hover, .button1:hover {
+    background-color: #0056b3;
 }
 
 .ground-floor .button1 {
-    left: 0%;
-    margin-left: 60px; 
+   left: 8%;
 }
 
 .top-floor .button {
-    left: 0%;
-    margin-left: 60px; 
+    left: 8%;
 }
 
 /* Media query for responsiveness */
 @media (max-width: 600px) {
     #elevatorContainer {
-        height: 300px; 
+        height: 300px;
     }
 
     .elevator {
-        width: 60px; 
-        height: 80px; 
+        width: 80px;
+        height: 100px;
+        position: relative;
+        margin-bottom: 20px; 
+    }
+
+    .lift-container {
+        flex-direction: column; 
+        align-items: center; 
+        margin-left: 0; 
+        width: 100%; 
     }
 
     .floor {
-        height: 80px; 
+        height: 100px;
     }
 
-    .button {
-        padding: 8px; 
+    
+
+    .button{
+        padding: 8px;
+        left: 70px;
+        margin-left: 0;
+        margin-top: 9%;
+
     }
+
+    .button1 {
+        padding: 8px;
+        left: 6%; 
+        margin-left: 0; 
+        margin-top: 9%;
+
+        
+    }
+
+
+    .ground-floor .button1 {
+        left: 12%;
+     }
+     
+     .top-floor .button {
+         left: 13%;
+     }
 }
