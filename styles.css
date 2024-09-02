@@ -105,6 +105,10 @@ body {
     background-color: #0056b3; 
 }
 
+.button1:hover {
+    background-color: #0056b3; 
+}
+
 .ground-floor .button1 {
     left: 0%;
     margin-left: 60px; 
