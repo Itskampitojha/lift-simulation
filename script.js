@@ -97,20 +97,22 @@ function callLift(targetFloor) {
     }
 }
 
-let isAnyLiftMoving = false; // Global state to track if any lift is moving
+// Ye function check karta hai ki koi doosri lift us floor par already ja rahi hai ya nahi
+function isAnotherLiftGoingToFloor(targetFloor) {
+    return lifts.some(lift => lift.isMoving && lift.targetFloor === targetFloor);
+}
 
 function moveLift(liftObj, targetFloor) {
     const { lift, currentFloor } = liftObj;
 
-    // Check if any lift is already moving; if so, do not proceed
-    if (isAnyLiftMoving) {
-        return; // Exit the function early if any lift is in motion
+    // Check if this lift is already moving or if another lift is moving to the same target floor
+    if (liftObj.isMoving || isAnotherLiftGoingToFloor(targetFloor)) {
+        return; // Exit the function early if this lift or another lift is already moving to the target floor
     }
 
     const floorsToMove = targetFloor - currentFloor;
-
-    liftObj.isMoving = true;
-    isAnyLiftMoving = true; // Set the global state to indicate a lift is moving
+    liftObj.isMoving = true; // Set the lift's moving state to true
+    liftObj.targetFloor = targetFloor; // Set the target floor for the current lift
 
     // Ensure doors are closed before moving
     closeDoors(liftObj, () => {
@@ -123,14 +125,15 @@ function moveLift(liftObj, targetFloor) {
         // Wait for the lift to reach the target floor
         setTimeout(() => {
             liftObj.currentFloor = targetFloor;
-            liftObj.isMoving = false;
-            isAnyLiftMoving = false; // Reset the global state after the lift has stopped moving
+            liftObj.isMoving = false; // Reset the lift's moving state
+            liftObj.targetFloor = null; // Clear the target floor after reaching
 
             // Open doors after reaching the target floor
             openDoors(liftObj);
         }, timeToMove);
     });
 }
+
 
 
 function openDoors(liftObj) {
