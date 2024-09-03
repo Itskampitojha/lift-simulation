@@ -6,10 +6,16 @@ document.getElementById('startBtn').addEventListener('click', function () {
     const numLifts = parseInt(document.getElementById('numLifts').value);
     const numFloors = parseInt(document.getElementById('numFloors').value);
 
-    if(numLifts <= 0 || numFloors <= 0){
-      alert("Number of floors and lifts should be more than 0.");
-      return;
-    }
+    if (numLifts <= 0 || numFloors <= 0) {
+        alert("Number of floors and lifts should be more than 0.");
+        return;
+    } else if (isNaN(numLifts) || isNaN(numFloors)) {
+        alert("Please enter a valid number for floors and lifts.");
+        return;
+    }    
+
+
+
     setupSimulation(numLifts, numFloors);
     processQueue(); // Start processing the queue automatically
 });
@@ -25,7 +31,13 @@ function setupSimulation(numLifts, numFloors) {
         const floor = document.createElement('div');
         floor.classList.add('floor');
 
-        if (i === 0) {
+        if (numFloors === 1) {
+            // If there's only one floor, use "Open Lift" button
+            floor.innerHTML = `
+                <div class="floor-info">Floor ${i + 1}</div>
+                <button class="button1" onclick="addRequestToQueue(${i})">Open</button>
+            `;
+        } else if (i === 0) {
             floor.classList.add('ground-floor');
             floor.innerHTML = `
                 <div class="floor-info">Floor ${i + 1}</div>
@@ -73,6 +85,7 @@ function setupSimulation(numLifts, numFloors) {
         lifts.push({ lift, currentFloor: 0, isMoving: false, doorsOpen: false, targetFloor: null });
     }
 }
+
 
 function addRequestToQueue(targetFloor) {
     requestQueue.push(targetFloor);
