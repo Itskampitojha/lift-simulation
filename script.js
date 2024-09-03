@@ -5,6 +5,11 @@ let requestQueue = [];
 document.getElementById('startBtn').addEventListener('click', function () {
     const numLifts = parseInt(document.getElementById('numLifts').value);
     const numFloors = parseInt(document.getElementById('numFloors').value);
+
+    if(numLifts <= 0 || numFloors <= 0){
+      alert("Number of floors and lifts should be more than 0.");
+      return;
+    }
     setupSimulation(numLifts, numFloors);
     processQueue(); // Start processing the queue automatically
 });
