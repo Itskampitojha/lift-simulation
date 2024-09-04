@@ -1,6 +1,7 @@
 let lifts = [];
 let floors = [];
 let requestQueue = [];
+let activeRequests = {};
 
 document.getElementById('startBtn').addEventListener('click', function () {
     const numLifts = parseInt(document.getElementById('numLifts').value);
@@ -14,8 +15,6 @@ document.getElementById('startBtn').addEventListener('click', function () {
         return;
     }    
 
-
-
     setupSimulation(numLifts, numFloors);
     processQueue(); // Start processing the queue automatically
 });
@@ -26,6 +25,7 @@ function setupSimulation(numLifts, numFloors) {
     floors = [];
     lifts = [];
     requestQueue = [];
+    activeRequests = {};
 
     for (let i = numFloors - 1; i >= 0; i--) {
         const floor = document.createElement('div');
@@ -86,9 +86,12 @@ function setupSimulation(numLifts, numFloors) {
     }
 }
 
-
 function addRequestToQueue(targetFloor) {
-    requestQueue.push(targetFloor);
+    // Prevent multiple requests for the same floor
+    if (!activeRequests[targetFloor]) {
+        activeRequests[targetFloor] = true;
+        requestQueue.push(targetFloor);
+    }
 }
 
 function processQueue() {
@@ -171,6 +174,9 @@ function closeDoors(liftObj, callback) {
         leftDoor.classList.remove('opened');
         rightDoor.classList.remove('opened');
         liftObj.doorsOpen = false;
+
+        // Mark the request for this floor as completed
+        activeRequests[liftObj.currentFloor] = false;
 
         if (callback) callback();
     }, 1000);
