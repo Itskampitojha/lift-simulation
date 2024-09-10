@@ -109,17 +109,20 @@ function processQueue() {
 
     const targetFloor = requestQueue[0];
 
-    // Find the nearest available lift (not moving, doors closed)
-    let availableLifts = lifts.filter(liftObj => !liftObj.isMoving && !liftObj.doorsOpen);
-
-    // Limit the number of lifts to respond to the target floor
+    // Count the number of lifts currently at the target floor
     let liftsAtTargetFloor = lifts.filter(liftObj => liftObj.currentFloor === targetFloor && liftObj.isMoving);
 
-    if (availableLifts.length > 0 && liftsAtTargetFloor.length < 2) {
-        let nearestLift = availableLifts[0]; // Simply take the first available lift
-        moveLift(nearestLift, targetFloor);
-        requestQueue.shift(); // Remove the processed request from the queue
-        liftCountAtFloors[targetFloor]--; // Decrement lift count for the floor after moving
+    // Only proceed if there are less than 2 lifts currently at the target floor
+    if (liftsAtTargetFloor.length < 2) {
+        // Find the nearest available lift (not moving, doors closed)
+        let availableLifts = lifts.filter(liftObj => !liftObj.isMoving && !liftObj.doorsOpen);
+
+        if (availableLifts.length > 0) {
+            let nearestLift = availableLifts[0]; // Simply take the first available lift
+            moveLift(nearestLift, targetFloor);
+            requestQueue.shift(); // Remove the processed request from the queue
+            liftCountAtFloors[targetFloor]--; // Decrement lift count for the floor after moving
+        }
     }
 
     setTimeout(processQueue, 500); // Process the next request after a short delay
