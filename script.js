@@ -1,7 +1,6 @@
 let lifts = [];
 let floors = [];
 let requestQueue = [];
-let activeRequests = {};
 
 document.getElementById('startBtn').addEventListener('click', function () {
     const numLifts = parseInt(document.getElementById('numLifts').value);
@@ -13,7 +12,7 @@ document.getElementById('startBtn').addEventListener('click', function () {
     } else if (isNaN(numLifts) || isNaN(numFloors)) {
         alert("Please enter a valid number for floors and lifts.");
         return;
-    }    
+    }
 
     setupSimulation(numLifts, numFloors);
     processQueue(); // Start processing the queue automatically
@@ -25,14 +24,12 @@ function setupSimulation(numLifts, numFloors) {
     floors = [];
     lifts = [];
     requestQueue = [];
-    activeRequests = {};
 
     for (let i = numFloors - 1; i >= 0; i--) {
         const floor = document.createElement('div');
         floor.classList.add('floor');
 
         if (numFloors === 1) {
-            // If there's only one floor, use "Open Lift" button
             floor.innerHTML = `
                 <div class="floor-info">Floor ${i + 1}</div>
                 <button class="button1" onclick="addRequestToQueue(${i})">Open</button>
@@ -87,9 +84,8 @@ function setupSimulation(numLifts, numFloors) {
 }
 
 function addRequestToQueue(targetFloor) {
-    // Prevent multiple requests for the same floor
-    if (!activeRequests[targetFloor]) {
-        activeRequests[targetFloor] = true;
+    // Always add to the queue if not already requested
+    if (!requestQueue.includes(targetFloor)) {
         requestQueue.push(targetFloor);
     }
 }
@@ -102,6 +98,7 @@ function processQueue() {
 
     const targetFloor = requestQueue[0];
 
+    // Find the nearest available lift (not moving, doors closed)
     let nearestLift = null;
     let minDistance = Infinity;
 
@@ -117,14 +114,14 @@ function processQueue() {
 
     if (nearestLift) {
         moveLift(nearestLift, targetFloor);
-        requestQueue.shift();
+        requestQueue.shift(); // Remove the processed request from the queue
     }
 
     setTimeout(processQueue, 500); // Process the next request after a short delay
 }
 
 function moveLift(liftObj, targetFloor) {
-    if (liftObj.isMoving || isAnotherLiftGoingToFloor(targetFloor)) return;
+    if (liftObj.isMoving) return; // Prevent moving if already in motion
 
     const { lift, currentFloor } = liftObj;
     const floorsToMove = targetFloor - currentFloor;
@@ -175,13 +172,6 @@ function closeDoors(liftObj, callback) {
         rightDoor.classList.remove('opened');
         liftObj.doorsOpen = false;
 
-        // Mark the request for this floor as completed
-        activeRequests[liftObj.currentFloor] = false;
-
         if (callback) callback();
     }, 1000);
-}
-
-function isAnotherLiftGoingToFloor(targetFloor) {
-    return lifts.some(lift => lift.isMoving && lift.targetFloor === targetFloor);
 }
