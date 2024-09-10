@@ -1,6 +1,7 @@
 let lifts = [];
 let floors = [];
 let requestQueue = [];
+let liftCountAtFloors = []; // To track the number of lifts at each floor
 
 document.getElementById('startBtn').addEventListener('click', function () {
     const numLifts = parseInt(document.getElementById('numLifts').value);
@@ -24,6 +25,7 @@ function setupSimulation(numLifts, numFloors) {
     floors = [];
     lifts = [];
     requestQueue = [];
+    liftCountAtFloors = new Array(numFloors).fill(0); // Initialize count for each floor
 
     for (let i = numFloors - 1; i >= 0; i--) {
         const floor = document.createElement('div');
@@ -32,25 +34,25 @@ function setupSimulation(numLifts, numFloors) {
         if (numFloors === 1) {
             floor.innerHTML = `
                 <div class="floor-info">Floor ${i + 1}</div>
-                <button class="button1" onclick="addRequestToQueue(${i})">Open</button>
+                <button class="button1" onclick="addRequestToQueue(${i}, this)">Open</button>
             `;
         } else if (i === 0) {
             floor.classList.add('ground-floor');
             floor.innerHTML = `
                 <div class="floor-info">Floor ${i + 1}</div>
-                <button class="button1" onclick="addRequestToQueue(${i})">Up</button>
+                <button class="button1" onclick="addRequestToQueue(${i}, this)">Up</button>
             `;
         } else if (i === numFloors - 1) {
             floor.classList.add('top-floor');
             floor.innerHTML = `
                 <div class="floor-info">Floor ${i + 1}</div>
-                <button class="button" onclick="addRequestToQueue(${i})">Down</button>
+                <button class="button" onclick="addRequestToQueue(${i}, this)">Down</button>
             `;
         } else {
             floor.innerHTML = `
                 <div class="floor-info">Floor ${i + 1}</div>
-                <button class="button1" onclick="addRequestToQueue(${i})">Up</button>
-                <button class="button" onclick="addRequestToQueue(${i})">Down</button>
+                <button class="button1" onclick="addRequestToQueue(${i}, this)">Up</button>
+                <button class="button" onclick="addRequestToQueue(${i}, this)">Down</button>
             `;
         }
 
@@ -83,10 +85,19 @@ function setupSimulation(numLifts, numFloors) {
     }
 }
 
-function addRequestToQueue(targetFloor) {
-    // Always add to the queue if not already requested
-    if (!requestQueue.includes(targetFloor)) {
+function addRequestToQueue(targetFloor, button) {
+    // Only add to queue if less than 2 lifts are currently assigned to the target floor
+    if (liftCountAtFloors[targetFloor] < 2) {
         requestQueue.push(targetFloor);
+        liftCountAtFloors[targetFloor]++; // Increment lift count for the floor
+
+        // Disable the button to prevent further requests
+        button.disabled = true;
+
+        // Allow the button to be re-enabled after all lifts have reached the floor
+        setTimeout(() => {
+            button.disabled = false;
+        }, 5000); // Re-enable button after 5 seconds (adjust as needed)
     }
 }
 
@@ -99,22 +110,16 @@ function processQueue() {
     const targetFloor = requestQueue[0];
 
     // Find the nearest available lift (not moving, doors closed)
-    let nearestLift = null;
-    let minDistance = Infinity;
+    let availableLifts = lifts.filter(liftObj => !liftObj.isMoving && !liftObj.doorsOpen);
 
-    lifts.forEach(liftObj => {
-        if (!liftObj.isMoving && !liftObj.doorsOpen) {
-            const distance = Math.abs(liftObj.currentFloor - targetFloor);
-            if (distance < minDistance) {
-                minDistance = distance;
-                nearestLift = liftObj;
-            }
-        }
-    });
+    // Limit the number of lifts to respond to the target floor
+    let liftsAtTargetFloor = lifts.filter(liftObj => liftObj.currentFloor === targetFloor && liftObj.isMoving);
 
-    if (nearestLift) {
+    if (availableLifts.length > 0 && liftsAtTargetFloor.length < 2) {
+        let nearestLift = availableLifts[0]; // Simply take the first available lift
         moveLift(nearestLift, targetFloor);
         requestQueue.shift(); // Remove the processed request from the queue
+        liftCountAtFloors[targetFloor]--; // Decrement lift count for the floor after moving
     }
 
     setTimeout(processQueue, 500); // Process the next request after a short delay
