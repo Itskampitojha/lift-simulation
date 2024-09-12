@@ -1,7 +1,7 @@
 let lifts = [];
 let floors = [];
 let requestQueue = [];
-let liftCountAtFloors = []; // To track the number of lifts at each floor
+let liftCountAtFloors = []; 
 
 document.getElementById('startBtn').addEventListener('click', function () {
     const numLifts = parseInt(document.getElementById('numLifts').value);
@@ -16,7 +16,7 @@ document.getElementById('startBtn').addEventListener('click', function () {
     }
 
     setupSimulation(numLifts, numFloors);
-    processQueue(); // Start processing the queue automatically
+    processQueue(); 
 });
 
 function setupSimulation(numLifts, numFloors) {
@@ -25,7 +25,7 @@ function setupSimulation(numLifts, numFloors) {
     floors = [];
     lifts = [];
     requestQueue = [];
-    liftCountAtFloors = new Array(numFloors).fill(0); // Initialize count for each floor
+    liftCountAtFloors = new Array(numFloors).fill(0); 
 
     for (let i = numFloors - 1; i >= 0; i--) {
         const floor = document.createElement('div');
@@ -86,50 +86,50 @@ function setupSimulation(numLifts, numFloors) {
 }
 
 function addRequestToQueue(targetFloor, button) {
-    // Only add to queue if less than 2 lifts are currently assigned to the target floor
+   
     if (liftCountAtFloors[targetFloor] < 2) {
         requestQueue.push(targetFloor);
-        liftCountAtFloors[targetFloor]++; // Increment lift count for the floor
+        liftCountAtFloors[targetFloor]++; 
 
-        // Disable the button to prevent further requests
+        
         button.disabled = true;
 
-        // Allow the button to be re-enabled after all lifts have reached the floor
+       
         setTimeout(() => {
             button.disabled = false;
-        }, 5000); // Re-enable button after 5 seconds (adjust as needed)
+        }, 5000); 
     }
 }
 
 function processQueue() {
     if (requestQueue.length === 0) {
-        setTimeout(processQueue, 500); // Check again after a delay if the queue is empty
+        setTimeout(processQueue, 500); 
         return;
     }
 
     const targetFloor = requestQueue[0];
 
-    // Count the number of lifts currently at the target floor
+    
     let liftsAtTargetFloor = lifts.filter(liftObj => liftObj.currentFloor === targetFloor && liftObj.isMoving);
 
-    // Only proceed if there are less than 2 lifts currently at the target floor
+    
     if (liftsAtTargetFloor.length < 2) {
         // Find the nearest available lift (not moving, doors closed)
         let availableLifts = lifts.filter(liftObj => !liftObj.isMoving && !liftObj.doorsOpen);
 
         if (availableLifts.length > 0) {
-            let nearestLift = availableLifts[0]; // Simply take the first available lift
+            let nearestLift = availableLifts[0]; 
             moveLift(nearestLift, targetFloor);
-            requestQueue.shift(); // Remove the processed request from the queue
-            liftCountAtFloors[targetFloor]--; // Decrement lift count for the floor after moving
+            requestQueue.shift(); 
+            liftCountAtFloors[targetFloor]--; 
         }
     }
 
-    setTimeout(processQueue, 500); // Process the next request after a short delay
+    setTimeout(processQueue, 500); 
 }
 
 function moveLift(liftObj, targetFloor) {
-    if (liftObj.isMoving) return; // Prevent moving if already in motion
+    if (liftObj.isMoving) return; 
 
     const { lift, currentFloor } = liftObj;
     const floorsToMove = targetFloor - currentFloor;
