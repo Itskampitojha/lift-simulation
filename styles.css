@@ -118,6 +118,14 @@ body {
     left: 8%;
 }
 
+
+.button:disabled,
+.button1:disabled {
+    background-color: #ccc; 
+    cursor: not-allowed; 
+}
+
+
 /* Media query for responsiveness */
 @media (max-width: 600px) {
     #elevatorContainer {

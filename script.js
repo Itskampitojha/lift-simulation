@@ -1,7 +1,7 @@
 let lifts = [];
 let floors = [];
 let requestQueue = [];
-let liftCountAtFloors = []; 
+let liftCountAtFloors = [];
 
 document.getElementById('startBtn').addEventListener('click', function () {
     const numLifts = parseInt(document.getElementById('numLifts').value);
@@ -86,19 +86,18 @@ function setupSimulation(numLifts, numFloors) {
 }
 
 function addRequestToQueue(targetFloor, button) {
-   
-    if (liftCountAtFloors[targetFloor] < 2) {
+    if (liftCountAtFloors[targetFloor] < 2) { 
         requestQueue.push(targetFloor);
         liftCountAtFloors[targetFloor]++; 
 
-        
         button.disabled = true;
+        button.style.backgroundColor = "#ccc"; 
 
-       
         setTimeout(() => {
             button.disabled = false;
+            button.style.backgroundColor = ""; 
         }, 5000); 
-    }
+    } 
 }
 
 function processQueue() {
@@ -109,19 +108,16 @@ function processQueue() {
 
     const targetFloor = requestQueue[0];
 
-    
+    // Check for lifts at the target floor
     let liftsAtTargetFloor = lifts.filter(liftObj => liftObj.currentFloor === targetFloor && liftObj.isMoving);
 
-    
-    if (liftsAtTargetFloor.length < 2) {
-        // Find the nearest available lift (not moving, doors closed)
+    if (liftsAtTargetFloor.length < 2) { // Ensure less than 2 lifts at the target floor
         let availableLifts = lifts.filter(liftObj => !liftObj.isMoving && !liftObj.doorsOpen);
 
         if (availableLifts.length > 0) {
             let nearestLift = availableLifts[0]; 
             moveLift(nearestLift, targetFloor);
             requestQueue.shift(); 
-            liftCountAtFloors[targetFloor]--; 
         }
     }
 
@@ -179,7 +175,8 @@ function closeDoors(liftObj, callback) {
         leftDoor.classList.remove('opened');
         rightDoor.classList.remove('opened');
         liftObj.doorsOpen = false;
-
+        
+        liftCountAtFloors[liftObj.currentFloor]--; 
         if (callback) callback();
     }, 1000);
 }
