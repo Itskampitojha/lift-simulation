@@ -87,16 +87,11 @@ function setupSimulation(numLifts, numFloors) {
 
 function addRequestToQueue(targetFloor, button) {
     if (liftCountAtFloors[targetFloor] < 2) { 
-        requestQueue.push(targetFloor);
+        requestQueue.push({ targetFloor, button });
         liftCountAtFloors[targetFloor]++; 
 
         button.disabled = true;
         button.style.backgroundColor = "#ccc"; 
-
-        setTimeout(() => {
-            button.disabled = false;
-            button.style.backgroundColor = ""; 
-        }, 5000); 
     } 
 }
 
@@ -106,7 +101,7 @@ function processQueue() {
         return;
     }
 
-    const targetFloor = requestQueue[0];
+    const { targetFloor, button } = requestQueue[0];  // Get target floor and button
 
     // Check for lifts at the target floor
     let liftsAtTargetFloor = lifts.filter(liftObj => liftObj.currentFloor === targetFloor && liftObj.isMoving);
@@ -116,7 +111,7 @@ function processQueue() {
 
         if (availableLifts.length > 0) {
             let nearestLift = availableLifts[0]; 
-            moveLift(nearestLift, targetFloor);
+            moveLift(nearestLift, targetFloor, button);  // Pass button to moveLift
             requestQueue.shift(); 
         }
     }
@@ -124,7 +119,7 @@ function processQueue() {
     setTimeout(processQueue, 500); 
 }
 
-function moveLift(liftObj, targetFloor) {
+function moveLift(liftObj, targetFloor, button) {
     if (liftObj.isMoving) return; 
 
     const { lift, currentFloor } = liftObj;
@@ -143,12 +138,12 @@ function moveLift(liftObj, targetFloor) {
             liftObj.isMoving = false;
             liftObj.targetFloor = null;
 
-            openDoors(liftObj);
+            openDoors(liftObj, button);  // Pass button to openDoors
         }, timeToMove);
     });
 }
 
-function openDoors(liftObj) {
+function openDoors(liftObj, button) {
     const lift = liftObj.lift;
     const leftDoor = lift.querySelector('.door.left');
     const rightDoor = lift.querySelector('.door.right');
@@ -160,7 +155,10 @@ function openDoors(liftObj) {
     leftDoor.style.transform = 'translateX(-100%)';
     rightDoor.style.transform = 'translateX(100%)';
 
-    setTimeout(() => closeDoors(liftObj), 2500);
+    setTimeout(() => closeDoors(liftObj, () => {
+        button.disabled = false;  // Enable the button after the entire lift operation
+        button.style.backgroundColor = ""; 
+    }), 2500);
 }
 
 function closeDoors(liftObj, callback) {
